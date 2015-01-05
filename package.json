@@ -1,0 +1,35 @@
+{
+  "name": "echo-logger",
+  "version": "1.0.0",
+  "description": "Browser console abstraction that adds some handy features",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "./node_modules/webpack/bin/webpack.js && ./node_modules/webpack/bin/webpack.js --config webpack.config.min.js",
+    "dev": "./node_modules/webpack/bin/webpack.js --watch && ./node_modules/webpack/bin/webpack.js --config webpack.config.min.js --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alianza-dev/echo.git"
+  },
+  "keywords": [
+    "console",
+    "console.log"
+  ],
+  "author": "Kent C. Dodds <kent@doddsfamily.us>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alianza-dev/echo/issues"
+  },
+  "homepage": "https://github.com/alianza-dev/echo",
+  "devDependencies": {
+    "6to5-loader": "^1.0.0",
+    "ghooks": "^0.2.2",
+    "webpack": "^1.4.15"
+  },
+  "config": {
+    "ghooks": {
+      "pre-commit": "npm run build"
+    }
+  }
+}
