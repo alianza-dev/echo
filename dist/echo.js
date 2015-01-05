@@ -119,10 +119,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  // add log functions to echo
 
-	  for (var _iterator = logFns[Symbol.iterator](), _step; !(_step = _iterator.next()).done;) {
-	    var fnName = _step.value;
-	    echo[fnName] = wrapLog(fnName);
-	  }
+	  logFns.forEach(logFns, function (fnName) {
+	    return echo[fnName] = wrapLog(fnName);
+	  });
 
 	  // make developers happy
 	  echo.displayName = "echo: \"" + name + "\" abstraction on console";
