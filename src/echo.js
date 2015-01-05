@@ -51,8 +51,7 @@ function create(name, {rank, defaultColor, colors, enabled, logger, logFns}) {
   echo.enabled = echoEnabledGetterSetter;
 
   // add log functions to echo
-
-  logFns.forEach(logFns, (fnName) => echo[fnName] = wrapLog(fnName));
+  logFns.forEach(fnName => echo[fnName] = wrapLog(fnName));
 
   // make developers happy
   echo.displayName = `echo: "${name}" abstraction on console`;
