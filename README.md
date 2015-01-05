@@ -16,6 +16,9 @@ http://jsbin.com/kaqazu
 
 `$ npm i --save alianza-dev/echo#LATEST_SHA` <-- put latest SHA there
 
+If you want me to actually publish this on bower or npm, then upvote
+[this issue](https://github.com/alianza-dev/echo/issues/1)
+
 # Usage
 
 ```js
@@ -140,3 +143,6 @@ Think of rank like this:
  - Only the first argument to the log functions will be colored
  - IE 10 doesn't support colors in the console, so `Echo` detects IE and doesn't attempt to add colors in IE.
 
+# TODO
+
+ - Write unit tests
