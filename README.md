@@ -6,6 +6,16 @@ Echo is a simple abstraction on top of `console` that provides a few nice APIs i
  - Log rank
  - Colored output
 
+# Demo
+
+http://jsbin.com/kaqazu
+
+# Installation
+
+`$ bower i --save alianza-dev/echo#LATEST_SHA` <-- put latest SHA there
+
+`$ npm i --save alianza-dev/echo#LATEST_SHA` <-- put latest SHA there
+
 # Usage
 
 ```js
