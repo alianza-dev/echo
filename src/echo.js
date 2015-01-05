@@ -128,11 +128,19 @@ function create(name, {rank, defaultColor, colors, enabled, logger, logFns}) {
 
 
 function get(name) {
-  return echos[name];
+  if (is.undefined(name)) {
+    return echos;
+  } else {
+    return echos[name];
+  }
 }
 
 function remove(name) {
-  delete echos[name];
+  if (is.undefined(name)) {
+    echos = {};
+  } else {
+    delete echos[name];
+  }
 }
 
 function enabled(newState) {

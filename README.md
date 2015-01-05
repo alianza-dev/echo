@@ -101,11 +101,11 @@ The functions that the given `logger` has that will be invoked.
 
 ## get(name:string)
 
-Gets a registered `echo` by name from the given string
+Gets a registered `echo` by name from the given string. If no name is provided, then it returns the entire array.
 
 ## remove(name:string)
 
-Removes a registered `echo` by name from the given string
+Removes a registered `echo` by name from the given string. If no name is provided, then it removes all `echos`.
 
 ## rank(newRank:number)
 
