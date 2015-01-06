@@ -38,7 +38,7 @@ function create(name, {rank, defaultColor, colors, enabled, logger, logFns}) {
   // note, 6to5 doesn't support destructuring assignment default values
   // once that happens, this will look prettier :-)
   var presetState = is.boolean(preconfigState.all) ? preconfigState.all : preconfigState[name];
-  enabled = !is.boolean(presetState) ? presetState : !is.boolean(enabled) ? enabled : true;
+  enabled = is.boolean(presetState) ? presetState : is.boolean(enabled) ? enabled : true;
   rank = !is.undefined(rank) ? rank : 5;
   colors = !is.undefined(colors) ? colors : COLORS;
   logger = !is.undefined(logger) ? logger : console;
