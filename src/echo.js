@@ -168,7 +168,7 @@ export default Echo;
 
 // functions declarations
 function addColor(args, color) {
-  if (!isIE && color) {
+  if (!isIE && color && !is.undefined(args[0])) {
     args.splice(1, 0, color);
     args[0] = '%c' + args[0];
   }
