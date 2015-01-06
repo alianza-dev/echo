@@ -147,6 +147,17 @@ window.echoLogging = {
 The above state would result in `fooLog`, and `barLog` being enabled by default (overriding what was passed into
 `create`) and `foobarLog`, `stateLog` and `networkLog` being disabled by default.
 
+Valid query parameters include:
+
+ - `echoEnableLog` should be a list of echo names separated by commas
+ - `echoDisableLog` should be a list of echo names separated by commas
+ - `echoRank` should be a number between 0 and 5 - controls initial `Echo.rank()` state
+ - `echoEnabled` should be "true" or "false" - controls initial `Echo.enabled()` state
+ - `echoAll` should be "true" or "false" - if this is set, the initial enabled state for all loggers will be set to its
+ value
+
+In addition, `echoRank`, `echoEnabled`, and `echoAll` can all be set via the `window.echoLogging` variable.
+
 # Rank
 
 Think of rank like this:
@@ -160,6 +171,13 @@ Think of rank like this:
 
  - Only the first argument to the log functions will be colored
  - IE 10 doesn't support colors in the console, so `Echo` detects IE and doesn't attempt to add colors in IE.
+
+## testMode
+
+I ran into a lot of trouble with loggers being re-registered with tests. Because I didn't want to spend time fixing the
+root problem (test context not being reset) you have `testMode` available which will prevent errors being thrown when
+an echo is registered with the same mode. Please only use this as a last resort. I'm not going to tell you how to do it.
+You'll have to figure it out if you feel like you really need to.
 
 # TODO
 

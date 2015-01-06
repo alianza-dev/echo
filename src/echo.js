@@ -20,22 +20,25 @@ const COLORS = {
 };
 const LOG_FNS = ['log', 'info', 'debug', 'warn', 'error'];
 
-var currentRank = 5;
 var is = {};
 ['undefined', 'string', {name: 'fn', type: 'function'}, 'boolean', 'number'].forEach(function(name) {
   is[name.name || name] = (val) => typeof val === (name.type || name);
 });
-var enabledByParam = getParameterByName('echoEnabled');
-var globallyEnabled = is.boolean(enabledByParam) ? enabledByParam : true;
+
+
+var preconfigState = getPreconfiguredLoggingState();
+
+var testMode = preconfigState.testMode;
+var currentRank = rank(preconfigState.rank || 5);
+var globallyEnabled = is.boolean(preconfigState.enabled) ? preconfigState.enabled : true;
 var echos = {};
-var preconfiguredLoggingState = getPreconfiguredLoggingState();
-var Echo = { create, get, remove, rank, enabled };
+var Echo = { create, get, remove, rank, enabled, testMode };
 
 function create(name, {rank, defaultColor, colors, enabled, logger, logFns}) {
   // note, 6to5 doesn't support destructuring assignment default values
   // once that happens, this will look prettier :-)
-  var presetState = preconfiguredLoggingState[name];
-  enabled = !is.undefined(presetState) ? presetState : !is.undefined(enabled) ? enabled : true;
+  var presetState = is.boolean(preconfigState.all) ? preconfigState.all : preconfigState[name];
+  enabled = !is.boolean(presetState) ? presetState : !is.boolean(enabled) ? enabled : true;
   rank = !is.undefined(rank) ? rank : 5;
   colors = !is.undefined(colors) ? colors : COLORS;
   logger = !is.undefined(logger) ? logger : console;
@@ -107,7 +110,7 @@ function create(name, {rank, defaultColor, colors, enabled, logger, logFns}) {
     if (is.undefined(name)) {
       throw new Error('echo name must be defined');
     }
-    if (!is.undefined(echos[name])) {
+    if (!Echo.testMode && !is.undefined(echos[name])) {
       throw new Error(`echo by the name of ${name} already exists. Cannot create another of the same name.`);
     }
     checkRank(rank);
@@ -205,19 +208,27 @@ function checkRank(rank) {
 function getPreconfiguredLoggingState() {
   var enableLogVal = getParameterByName('echoEnableLog');
   var disableLogVal = getParameterByName('echoDisableLog');
+  var globallyEnabled = getParameterByName('echoEnabled');
+  var all = getParameterByName('echoAll');
+  var rank = getParameterByName('echoRank');
   var enableQueryParamLogs = is.string(enableLogVal) ? enableLogVal.split(',') : [];
   var disableQueryParamLogs = is.string(disableLogVal) ? disableLogVal.split(',') : [];
   var state = window.echoLogging || {};
+  all = state.testMode === true ? false : all;
+  var doAll = is.boolean(all);
+  state.all = doAll ? state.all : all;
+  state.enabled = doAll ? state.all : is.boolean(globallyEnabled) ? state.enabled : globallyEnabled;
+  state.rank = rank;
 
   enableQueryParamLogs.forEach(function(log) {
     if (log) {
-      state[log] = true;
+      state[log] = doAll ? state.all : true;
     }
   });
 
   disableQueryParamLogs.forEach(function(log) {
     if (log) {
-      state[log] = false;
+      state[log] = doAll ? state.all : false;
     }
   });
 
@@ -234,10 +245,16 @@ function getParameterByName(name) {
       return true;
     } else if (val === 'false') {
       return false;
+    } else if (isNumeric(val)) {
+      return parseFloat(val);
     } else {
       return val;
     }
   } else {
     return '';
   }
+}
+
+function isNumeric(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
 }
