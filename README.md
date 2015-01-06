@@ -129,6 +129,24 @@ error. All `logFns` are passed down into the provided `logger` (defaults to `con
 On top of this, each `echo` function has the keys to all the `colors` added to it as functions as well which will add
 the specified color value to the log to provide the desired color.
 
+# Query Params and window.echoLogging
+
+You can enable/disable echos by name via query parameters or `window.echoLogging`. This is mostly useful for debugging
+purposes. Query params take priority, and disabled state takes priority. This also takes priority over whatever is
+passed into `create`.
+
+```js
+window.echoLogging = {
+  stateLog: false,
+  networkLog: true
+};
+
+// url: http://example.com?echoEnableLog=fooLog,barLog&echoDisableLog=foobarLog,networkLog
+```
+
+The above state would result in `fooLog`, and `barLog` being enabled by default (overriding what was passed into
+`create`) and `foobarLog`, `stateLog` and `networkLog` being disabled by default.
+
 # Rank
 
 Think of rank like this:

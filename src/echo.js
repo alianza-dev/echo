@@ -21,19 +21,22 @@ const COLORS = {
 const LOG_FNS = ['log', 'info', 'debug', 'warn', 'error'];
 
 var currentRank = 5;
-var globallyEnabled = true;
 var is = {};
 ['undefined', 'string', {name: 'fn', type: 'function'}, 'boolean', 'number'].forEach(function(name) {
   is[name.name || name] = (val) => typeof val === (name.type || name);
 });
+var enabledByParam = getParameterByName('echoEnabled');
+var globallyEnabled = is.boolean(enabledByParam) ? enabledByParam : true;
 var echos = {};
+var preconfiguredLoggingState = getPreconfiguredLoggingState();
 var Echo = { create, get, remove, rank, enabled };
 
 function create(name, {rank, defaultColor, colors, enabled, logger, logFns}) {
   // note, 6to5 doesn't support destructuring assignment default values
   // once that happens, this will look prettier :-)
+  var presetState = preconfiguredLoggingState[name];
+  enabled = !is.undefined(presetState) ? presetState : !is.undefined(enabled) ? enabled : true;
   rank = !is.undefined(rank) ? rank : 5;
-  enabled = !is.undefined(enabled) ? enabled : true;
   colors = !is.undefined(colors) ? colors : COLORS;
   logger = !is.undefined(logger) ? logger : console;
   logFns = !is.undefined(logFns) ? logFns : LOG_FNS;
@@ -196,5 +199,45 @@ function checkRank(rank) {
     throw new Error(
       `echo rank (value: ${rank}) must be numbers between 0 and 5 (inclusive). 0 is less logs, 5 is more.`
     );
+  }
+}
+
+function getPreconfiguredLoggingState() {
+  var enableLogVal = getParameterByName('echoEnableLog');
+  var disableLogVal = getParameterByName('echoDisableLog');
+  var enableQueryParamLogs = is.string(enableLogVal) ? enableLogVal.split(',') : [];
+  var disableQueryParamLogs = is.string(disableLogVal) ? disableLogVal.split(',') : [];
+  var state = window.echoLogging || {};
+
+  enableQueryParamLogs.forEach(function(log) {
+    if (log) {
+      state[log] = true;
+    }
+  });
+
+  disableQueryParamLogs.forEach(function(log) {
+    if (log) {
+      state[log] = false;
+    }
+  });
+
+  return state;
+}
+
+function getParameterByName(name) {
+  name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+  var regex = new RegExp('[\\?&]' + name + '=([^&#]*)', 'i');
+  var results = regex.exec(location.search || location.hash);
+  if (results) {
+    var val = decodeURIComponent(results[1].replace(/\+/g, ' '));
+    if (val === 'true') {
+      return true;
+    } else if (val === 'false') {
+      return false;
+    } else {
+      return val;
+    }
+  } else {
+    return '';
   }
 }
