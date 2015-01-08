@@ -32,17 +32,16 @@ var testMode = preconfigState.testMode;
 var currentRank = rank(preconfigState.rank || 5);
 var globallyEnabled = is.boolean(preconfigState.enabled) ? preconfigState.enabled : true;
 var echos = {};
-var Echo = { create, get, remove, rank, enabled, testMode };
+var Echo = {create, get, remove, rank, enabled, testMode};
 
-function create(name, {rank, defaultColor, colors, enabled, logger, logFns}) {
-  // note, 6to5 doesn't support destructuring assignment default values
-  // once that happens, this will look prettier :-)
+function create(name, {
+  rank = 5, colors = COLORS, logger = console, logFns = LOG_FNS,
+  defaultColor, enabled
+  } = {}) {
+  // enabled: default to all if all is set, then preconfigState for the logger name
+  // then the provided enabled, then true
   var presetState = is.boolean(preconfigState.all) ? preconfigState.all : preconfigState[name];
   enabled = is.boolean(presetState) ? presetState : is.boolean(enabled) ? enabled : true;
-  rank = !is.undefined(rank) ? rank : 5;
-  colors = !is.undefined(colors) ? colors : COLORS;
-  logger = !is.undefined(logger) ? logger : console;
-  logFns = !is.undefined(logFns) ? logFns : LOG_FNS;
 
   checkArgs(name, rank, defaultColor, colors, logger, logFns);
 

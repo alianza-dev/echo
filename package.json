@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/alianza-dev/echo",
   "devDependencies": {
+    "6to5": "^2.9.0",
     "6to5-loader": "^1.0.0",
     "ghooks": "^0.2.2",
     "webpack": "^1.4.15"
