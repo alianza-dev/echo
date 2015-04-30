@@ -172,6 +172,11 @@ Think of rank like this:
  - Only the first argument to the log functions will be colored
  - IE 10 doesn't support colors in the console, so `Echo` detects IE and doesn't attempt to add colors in IE.
 
+## IE
+
+ - Internet Explorer has issues with console and doesn't support all the operations that you may wish to (like `debug`
+ for example). Echo will do an undefined check before invoking a logger function and call a `noop` instead).
+
 ## testMode
 
 I ran into a lot of trouble with loggers being re-registered with tests. Because I didn't want to spend time fixing the

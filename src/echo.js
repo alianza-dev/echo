@@ -93,7 +93,7 @@ function create(name, {
   function logIt(fnName, color, ...args) {
     if (globallyEnabled && enabled && highEnoughRank(rank)) {
       args = addColor(args, color);
-      return logger[fnName].apply(logger, args);
+      return (logger[fnName] || noop).apply(logger, args);
     }
   }
 
@@ -118,12 +118,6 @@ function create(name, {
     }
     if (!Array.isArray(logFns)) {
       throw new Error('logFns must be an array of strings');
-    }
-    var missingSomething = logFns.some(function(logFn) {
-      return !is.string(logFn) || !is.fn(logger[logFn]);
-    });
-    if (missingSomething) {
-      throw new Error(`echo's logger (value: ${logger}) must implement these functions: ${logFns.join(', ')} (which must all be function names as strings)`);
     }
   }
 }
@@ -256,4 +250,7 @@ function getParameterByName(name) {
 
 function isNumeric(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+function noop() {
 }
