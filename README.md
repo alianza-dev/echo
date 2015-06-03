@@ -12,9 +12,9 @@ http://jsbin.com/kaqazu
 
 # Installation
 
-`$ bower i --save alianza-dev/echo#LATEST_SHA` <-- put latest SHA there
-
-`$ npm i --save alianza-dev/echo#LATEST_SHA` <-- put latest SHA there
+```
+$ npm i --save echo-logger
+```
 
 If you want me to actually publish this on bower or npm, then upvote
 [this issue](https://github.com/alianza-dev/echo/issues/1)
