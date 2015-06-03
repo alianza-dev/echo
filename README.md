@@ -16,9 +16,6 @@ http://jsbin.com/kaqazu
 $ npm i --save echo-logger
 ```
 
-If you want me to actually publish this on bower or npm, then upvote
-[this issue](https://github.com/alianza-dev/echo/issues/1)
-
 # Usage
 
 ```js
